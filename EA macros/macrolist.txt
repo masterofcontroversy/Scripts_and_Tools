@@ -1,0 +1,2 @@
+//Animation Pointer macro
+#define AnimPointer(Type,Type_Designation,AnimID) "BYTE Type Type_Designation AnimID 0;"
