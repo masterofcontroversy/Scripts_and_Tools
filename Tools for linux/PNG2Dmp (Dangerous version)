@@ -1,0 +1,47 @@
+#!/bin/bash
+#Poorly written by Contro
+
+SELF=$(readlink -f "$0")
+
+#Function for calling PNG2Dmp
+convert(){
+  #Defining and conditioning arguments
+  FILE=$(basename "$1")
+  FILE_NAME=$(echo $FILE | cut -f 1 -d '.')
+  DIR_NAME=$(dirname "$1")
+  DMP_DIR="" #Place absolute path to your dump folder inbetween quotes
+
+  cd "$DIR_NAME"
+
+  #Use wine to call PNG2Dmp.exe
+  wine "" --lz77 "$FILE" #Place absolute path to PNG2Dmp.exe inbetween quotes
+
+  #Moving output files to the dump location
+  $(mv "$FILE_NAME.dmp" "$DMP_DIR/$FILE_NAME.dmp")
+}
+
+if [ "$1" == "-r" ];
+then
+#Run recursively, on all png files from the current directory onwards
+
+  #Safeguard to make sure hundreds or more files get converted
+  FILE_COUNT=$(find -name "*.png" -type f | wc -l)
+  if [ $FILE_COUNT -ge 100 ];
+  then
+    echo "There are" $FILE_COUNT "files selected for conversion. Do you still want to continue? y : n"
+    read CONFIRMATION
+    if [ $CONFIRMATION == "y" ];
+    then
+      find -name "*.png" -exec "$SELF" {} \;
+    fi
+  else
+    find -name "*.png" -exec "$SELF" {} \;
+  fi
+
+else
+#Run on one specified file
+convert "$1"
+
+fi
+                                                                                                                                                                                                                                            
+        
