@@ -3,6 +3,14 @@
 
 SELF=$(readlink -f "$0")
 
+#Deciding whether $2 data should be used by script or Png2Dmp
+if [ "$2" != "--move" ]
+then
+  FIRST_WINE_ARG=$2
+else
+  FIRST_WINE_ARG=$3
+fi
+
 #Function for calling Png2Dmp
 convert(){
   #Defining and conditioning arguments
@@ -21,7 +29,6 @@ convert(){
   then
     #Moving output files to the dump location
     $(mv "$FILE_NAME.dmp" "$DMP_DIR/$FILE_NAME.dmp")
-
   fi
 }
 
@@ -37,11 +44,11 @@ then
     exit
   
   else
-    find -name "*.png" -exec "$SELF" {} $2 $3 $4 $5 \;
+    find -name "*.png" -exec "$SELF" {} $2 $FIRST_WINE_ARG $4 $5 \;
   fi
 
 else
 #Run on one specified file
-convert "$1" $2 $3 $4 $5
+convert "$1" $2 $FIRST_WINE_ARG $4 $5
 
 fi
