@@ -3,22 +3,26 @@
 
 SELF=$(readlink -f "$0")
 
-#Function for calling PNG2Dmp
+#Function for calling Png2Dmp
 convert(){
   #Defining and conditioning arguments
   FILE=$(basename "$1")
   FILE_NAME=$(echo $FILE | cut -f 1 -d '.')
   DIR_NAME=$(dirname "$1")
-  DMP_DIR="" #Place absolute path to your dump folder inbetween quotes
+  DMP_DIR="" #Place path to your dump folder inbetween quotes
   
   cd "$DIR_NAME"
 
   echo "$FILE"
-  #Use wine to call PNG2Dmp.exe
-  wine "" --lz77 "$FILE" #Place absolute path to PNG2Dmp.exe inbetween quotes
+  #Use wine to call Png2Dmp.exe
+  WINEDEBUG=-all wine "" "$FILE" $3 $4 $5 #Place path to Png2Dmp.exe inbetween quotes
 
-  #Moving output files to the dump location
-  $(mv "$FILE_NAME.dmp" "$DMP_DIR/$FILE_NAME.dmp")
+  if [ "$2" == "--move" ]
+  then
+    #Moving output files to the dump location
+    $(mv "$FILE_NAME.dmp" "$DMP_DIR/$FILE_NAME.dmp")
+
+  fi
 }
 
 if [ "$1" == "-r" ];
@@ -33,13 +37,11 @@ then
     exit
   
   else
-    find -name "*.png" -exec "$SELF" {} \;
+    find -name "*.png" -exec "$SELF" {} $2 $3 $4 $5 \;
   fi
 
 else
 #Run on one specified file
-convert "$1"
+convert "$1" $2 $3 $4 $5
 
 fi
-
-
