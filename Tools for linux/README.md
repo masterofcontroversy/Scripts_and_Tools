@@ -15,6 +15,6 @@ Uses wine to run Png2Dmp (As of writing this I don't know who the creator is)
 ## Usage:
 
 Run on the png file you want to compress. This is for compressing one file.  
-Run with the -r argument in place of a file name to search all directories from current directory onwards for png files to compress
-Run with the --move argument to automatically move the output files to the location specified in the DMP_DIR variable
-All normal Png2Dmp commands work with this script as long as they come after -r (or --move if it is present).
+Run with the -r argument in place of a file name to search all directories from current directory onwards for png files to compress  
+Run with the --move argument to automatically move the output files to the location specified in the DMP_DIR variable  
+All normal Png2Dmp commands work with this script as long as they come after -r (or --move if it is present).  
