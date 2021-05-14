@@ -3,16 +3,17 @@
 
 SELF=$(readlink -f "$0")
 
-#Deciding whether $2 data should be used by script or Png2Dmp
 if [ "$2" != "--move" ]
 then
   FIRST_WINE_ARG=$2
+  SECOND_WINE_ARG=$3
+  THIRD_WINE_ARG=$4
 else
   FIRST_WINE_ARG=$3
 fi
 
 #Function for calling Png2Dmp
-convert(){
+compress(){
   #Defining and conditioning arguments
   FILE=$(basename "$1")
   FILE_NAME=$(echo $FILE | cut -f 1 -d '.')
@@ -36,7 +37,7 @@ if [ "$1" == "-r" ];
 then
 #Run recursively, on all png files from the current directory onwards
 
-  #Safeguard to make sure hundreds or more files get converted
+  #Safeguard to make sure hundreds or more files don't get compressed
   FILE_COUNT=$(find -name "*.png" -type f | wc -l)
   if [ $FILE_COUNT -ge 100 ];
   then
@@ -44,11 +45,11 @@ then
     exit
   
   else
-    find -name "*.png" -exec "$SELF" {} $2 $FIRST_WINE_ARG $4 $5 \;
+    find -name "*.png" -exec "$SELF" {} $2 $WINE_START_ARG $4 $5 \;
   fi
 
 else
 #Run on one specified file
-convert "$1" $2 $FIRST_WINE_ARG $4 $5
+compress "$1" $2 $FIRST_WINE_ARG $SECOND_WINE_ARG $THIRD_WINE_ARG
 
 fi

@@ -7,8 +7,6 @@ SELF=$(readlink -f "$0")
 if [ "$2" != "--move" ]
 then
   FIRST_WINE_ARG=$2
-  SECOND_WINE_ARG=$3
-  THIRD_WINE_ARG=$4
 else
   FIRST_WINE_ARG=$3
 fi
@@ -19,20 +17,23 @@ compress(){
   FILE=$(basename "$1")
   FILE_NAME=$(echo $FILE | cut -f 1 -d '.')
   DIR_NAME=$(dirname "$1")
-  DMP_DIR="" #Place path to your dump folder inbetween quotes
+  DMP_DIR="" #Place path to dump directory inbetween quotes
   
   cd "$DIR_NAME"
 
   echo "$FILE"
   #Use wine to call Png2Dmp.exe
-  WINEDEBUG=-all wine "" "$FILE" $FIRST_WINE_ARG $4 $5 #Place path to Png2Dmp.exe inbetween quotes
+  WINEDEBUG=-all wine "" "$FILE" #Place path to PortraitFormatter.exe inbetween quotes
 
-  if [ "$2" == "--move" ]
-  then
-    #Moving output files to the dump location
-    $(mv "$FILE_NAME.dmp" "$DMP_DIR/$FILE_NAME.dmp")
+  #if [ "$2" == "--move" ]
+  #then
+  
+    $(mv "${FILE_NAME}_frames.dmp" $DMP_DIR)
+    $(mv "${FILE_NAME}_palette.dmp" $DMP_DIR)
+    $(mv "${FILE_NAME}_mug.dmp" $DMP_DIR)
+    $(mv "${FILE_NAME}_minimug.dmp" $DMP_DIR)
 
-  fi
+    #fi
 }
 
 if [ "$1" == "-r" ];
@@ -43,18 +44,15 @@ then
   FILE_COUNT=$(find -name "*.png" -type f | wc -l)
   if [ $FILE_COUNT -ge 100 ];
   then
-    echo "There are" $FILE_COUNT "files selected for conversion. Do you still want to continue? y : n"
-    read CONFIRMATION
-    if [ $CONFIRMATION == "y" ];
-    then
-      find -name "*.png" -exec "$SELF" {} \;
-    fi
+    echo "ERROR: There are" $FILE_COUNT "files selected for conversion. Ending script"
+    exit
+  
   else
-    find -name "*.png" -exec "$SELF" {} $2 $FIRST_WINE_ARG $4 $5 \;
+    find -name "*.png" -exec "$SELF" {} \;
   fi
 
 else
 #Run on one specified file
-compress "$1" $2 $FIRST_WINE_ARG $SECOND_WINE_ARG $THIRD_WINE_ARG
+compress "$1"
 
 fi
