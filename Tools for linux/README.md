@@ -19,3 +19,12 @@ Run with the -r argument in place of a file name to search all directories from 
   (If there are move than 100 bin files found, the script will stop. The dangerous version has no such restriction)  
 Run with the --move argument to automatically move the output files to the location specified in the DMP_DIR variable  
 All normal Png2Dmp commands work with this script as long as they come after -r (or --move if it is present).  
+
+# portrait-formatter:
+
+Uses wine to run Portrait Formatter by Crazycolerz5  
+
+## Usage:
+
+Run on the png file you want to format.  
+The -r and --move arguments work the same here as they do in PNG2Dmp
