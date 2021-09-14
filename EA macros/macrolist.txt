@@ -2,7 +2,12 @@
 #define AnimPointer(Type,Type_Designation,AnimID) "BYTE Type Type_Designation AnimID 0;"
 
 //Chapter item permissions
-//Door key + 1
-//Lockpick + 2
-//Antitoxin + 4
-#define AIItemUse(index, permission) "PUSH; ORG ($D8538 + index * 0x4); BYTE permission; POP"
+//Counting backwards
+//Door key = third bit
+//Lockpick = second bit
+//Antitoxin = first bit
+//Please remember that to define binary, you add "b" to the end of your binary
+#define AIItemUse(Index, permission) "PUSH; ORG ($D8538 + Index * 0x4); BYTE permission; POP"
+
+//Skirmish chapters
+#define SkirmishChapter(Index,ChapterID) "PUSH; ORG ($206948 + Index); BYTE ChapterID; POP"
